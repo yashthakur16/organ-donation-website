@@ -1,0 +1,35 @@
+package com.organ.donation.service;
+
+import com.organ.donation.model.Recipient;
+import com.organ.donation.repository.RecipientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class RecipientService {
+
+    @Autowired
+    private RecipientRepository recipientRepository;
+
+    public String requestOrgan(Recipient recipient) {
+        recipient.setStatus("Pending");
+        recipientRepository.save(recipient);
+        return "Organ request submitted!";
+    }
+
+    public String requestVerification(Long recipientId) {
+        Optional<Recipient> recipient = recipientRepository.findById(recipientId);
+        if (recipient.isPresent()) {
+            recipient.get().setVerificationStatus("Under Review");
+            recipientRepository.save(recipient.get());
+            return "Verification requested!";
+        }
+        return "Recipient not found!";
+    }
+
+    public List<Recipient> getAllRecipients() {
+        return recipientRepository.findAll();
+    }
+}

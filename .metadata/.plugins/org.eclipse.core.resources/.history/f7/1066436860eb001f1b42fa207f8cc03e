@@ -1,0 +1,16 @@
+package com.organ.donation.repository;
+
+import com.organ.donation.model.Chat;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface ChatRepository extends JpaRepository<Chat, Long> {
+	public List<ChatDTO> getChatHistory(Long user1Id, Long user2Id) {
+	    List<Chat> chatList = chatRepository.findBySenderIdAndReceiverIdOrReceiverIdAndSenderIdOrderByTimestampAsc(
+	        user1Id, user2Id, user2Id, user1Id
+	    );
+
+}

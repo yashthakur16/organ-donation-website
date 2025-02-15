@@ -1,0 +1,30 @@
+package com.organ.donation.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "recipients")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Recipient {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long recipientId;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(nullable = false)
+    private String organType;
+
+    @Column(nullable = false)
+    private String bloodType;
+
+    @Column(nullable = false)
+    private String status; // Pending, Verified, Matched
+}

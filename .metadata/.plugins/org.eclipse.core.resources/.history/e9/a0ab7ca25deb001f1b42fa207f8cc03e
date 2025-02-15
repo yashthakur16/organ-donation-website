@@ -1,0 +1,46 @@
+package com.organ.donation.service;
+
+import com.organ.donation.model.Chat;
+import com.organ.donation.model.User;
+import com.organ.donation.repository.ChatRepository;
+import com.organ.donation.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class ChatService {
+
+    @Autowired
+    private ChatRepository chatRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // Send a message
+    @Transactional
+    public String sendMessage(Long senderId, Long receiverId, String message) {
+        User sender = userRepository.findById(senderId)
+                .orElseThrow(() -> new RuntimeException("Sender not found"));
+        User receiver = userRepository.findById(receiverId)
+                .orElseThrow(() -> new RuntimeException("Receiver not found"));
+
+        Chat chat = new Chat();
+        chat.setSender(sender);
+        chat.setReceiver(receiver);
+        chat.setMessage(message);
+        chat.setTimestamp(LocalDateTime.now());
+
+        chatRepository.save(chat);
+        return "Message sent successfully!";
+    }
+
+    // Get chat history between two users
+    public List<Chat> getChatHistory(Long user1Id, Long user2Id) {
+        return chatRepository.findBySenderIdAndReceiverIdOrReceiverIdAndSenderIdOrderByTimestampAsc(
+                user1Id, user2Id, user2Id, user1Id);
+    }
+}

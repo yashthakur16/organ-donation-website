@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Organ Donation</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>Welcome, <span id="username">User</span></h2>
+        <h3>Role: <span id="userRole"></span></h3>
+
+        <!-- Donor Section -->
+        <div id="donorSection" class="dashboard-section">
+            <h3>Donor Options</h3>
+            <button onclick="window.location.href='donate.html'">Donate an Organ</button>
+            <button onclick="window.location.href='donor_status.html'">Check Donation Status</button>
+        </div>
+
+        <!-- Recipient Section -->
+        <div id="recipientSection" class="dashboard-section">
+            <h3>Recipient Options</h3>
+            <button onclick="window.location.href='request_organ.html'">Request an Organ</button>
+            <button onclick="window.location.href='recipient_status.html'">Check Request Status</button>
+        </div>
+
+        <!-- Admin Section -->
+        <div id="adminSection" class="dashboard-section">
+            <h3>Admin Options</h3>
+            <button onclick="window.location.href='verify_users.html'">Verify Users</button>
+            <button onclick="window.location.href='matching.html'">View Matches</button>
+        </div>
+
+        <button id="logoutBtn">Logout</button>
+    </div>
+
+    <button onclick="goToChat()">Go to Chat</button>
+
+    <div id="notifications">
+        <h3>🔔 Notifications</h3>
+        <ul id="notification-list"></ul>
+    </div>
+    
+    <script src="js/notifications.js"></script>
+
+    
+    
+
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

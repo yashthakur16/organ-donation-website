@@ -1,0 +1,5 @@
+package RecipientRepository;
+
+public interface RecipientRepository {
+
+}

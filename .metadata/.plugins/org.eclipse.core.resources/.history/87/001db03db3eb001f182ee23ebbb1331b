@@ -1,0 +1,52 @@
+package com.organ.donation.service;
+
+import com.organ.donation.model.Notification;
+import com.organ.donation.model.User;
+import com.organ.donation.repository.NotificationRepository;
+import com.organ.donation.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class NotificationService {
+
+    @Autowired
+    private NotificationRepository notificationRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // Create a notification
+    public void createNotification(Long userId, String message) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Notification notification = new Notification();
+        notification.setUser(user);
+        notification.setMessage(message);
+        notification.setTimestamp(LocalDateTime.now());
+        notification.setStatus(false); // false = unread
+
+        notificationRepository.save(notification);
+    }
+
+    // Get all unread notifications for a user
+    public List<Notification> getNotifications(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return notificationRepository.findByUserOrderByTimestampDesc(user);
+    }
+
+    // Mark notification as read
+    public void markAsRead(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new RuntimeException("Notification not found"));
+
+        notification.setStatus(true); // true = read
+        notificationRepository.save(notification);
+    }
+}

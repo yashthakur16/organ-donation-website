@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate an Organ</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Donate an Organ</h2>
+        <form id="donateForm">
+            <label for="organType">Select Organ:</label>
+            <select id="organType" required>
+                <option value="Kidney">Kidney</option>
+                <option value="Liver">Liver</option>
+                <option value="Heart">Heart</option>
+                <option value="Lungs">Lungs</option>
+            </select>
+
+            <label for="bloodType">Select Blood Type:</label>
+            <select id="bloodType" required>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+            </select>
+
+            <button type="submit">Submit Donation</button>
+        </form>
+    </div>
+    <button onclick="openChat(RECIPIENT_ID)">Chat with Recipient</button>
+
+
+    <script src="js/donate.js"></script>
+</body>
+</html>

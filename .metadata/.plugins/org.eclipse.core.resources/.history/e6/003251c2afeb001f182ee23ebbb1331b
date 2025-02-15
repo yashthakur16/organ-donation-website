@@ -1,0 +1,5 @@
+package com.organ.donation.controller;
+
+public class UserController {
+
+}

@@ -1,0 +1,65 @@
+package com.organ.donation.controller;
+
+import com.organ.donation.model.Donor;
+import com.organ.donation.service.DonorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/donor")
+@CrossOrigin(origins = "*") // Allow frontend access
+public class DonorController {
+
+    @Autowired
+    private DonorService donorService;
+
+    @PostMapping("/donate")
+    public ResponseEntity<String> postDonation(@RequestBody DonorRequest donorRequest) {
+        Donor donor = new Donor();
+        donor.setOrganType(donorRequest.getOrganType());
+        donor.setBloodType(donorRequest.getBloodType());
+
+        String response = donorService.postDonation(donor, donorRequest.getUserId());
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/verify/{donorId}")
+    public ResponseEntity<String> requestVerification(@PathVariable Long donorId) {
+        return ResponseEntity.ok(donorService.requestVerification(donorId));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Donor>> getAllDonors() {
+        return ResponseEntity.ok(donorService.getAllDonors());
+    }
+}
+
+// DTO for safer request handling
+class DonorRequest {
+    private Long userId;
+    private String organType;
+    private String bloodType;
+
+    // Getters & Setters
+    public Long getUserId() {
+        return userId;
+    }
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+    public String getOrganType() {
+        return organType;
+    }
+    public void setOrganType(String organType) {
+        this.organType = organType;
+    }
+    public String getBloodType() {
+        return bloodType;
+    }
+    public void setBloodType(String bloodType) {
+        this.bloodType = bloodType;
+    }
+}

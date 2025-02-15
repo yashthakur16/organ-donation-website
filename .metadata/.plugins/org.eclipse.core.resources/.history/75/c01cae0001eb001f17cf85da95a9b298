@@ -1,0 +1,5 @@
+package com.organ.donation.repository;
+
+public interface DonorRepository {
+
+}

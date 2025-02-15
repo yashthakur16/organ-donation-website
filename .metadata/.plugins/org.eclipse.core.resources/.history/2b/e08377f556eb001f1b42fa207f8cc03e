@@ -1,0 +1,5 @@
+package com.organ.donation.service;
+
+public class ChatService {
+
+}

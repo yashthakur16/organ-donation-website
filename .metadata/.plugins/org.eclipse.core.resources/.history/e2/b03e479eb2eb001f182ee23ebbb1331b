@@ -1,0 +1,4 @@
+@Repository
+public interface NotificationRepository extends JpaRepository<Notification, Long> {
+    List<Notification> findByUserAndStatusOrderByTimestampDesc(User user, boolean status);
+}

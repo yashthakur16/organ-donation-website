@@ -1,0 +1,28 @@
+package com.organ.donation.controller;
+
+import com.organ.donation.model.Chat;
+import com.organ.donation.service.ChatService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/chats")
+public class ChatController {
+
+    @Autowired
+    private ChatService chatService;
+
+    @PostMapping("/send")
+    public String sendMessage(@RequestParam Long senderId, 
+                              @RequestParam Long receiverId, 
+                              @RequestParam String message) {
+        return chatService.sendMessage(senderId, receiverId, message);
+    }
+
+    @GetMapping("/history")
+    public List<Chat> getChatHistory(@RequestParam Long user1Id, @RequestParam Long user2Id) {
+        return chatService.getChatHistory(user1Id, user2Id);
+    }
+}

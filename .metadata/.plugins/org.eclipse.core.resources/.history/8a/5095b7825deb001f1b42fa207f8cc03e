@@ -1,0 +1,5 @@
+package com.organ.donation.dto;
+
+public class ChatDTO {
+
+}

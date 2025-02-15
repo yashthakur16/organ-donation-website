@@ -1,0 +1,32 @@
+package com.organ.donation.controller;
+
+import com.organ.donation.model.Donor;
+import com.organ.donation.service.DonorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/donor")
+public class DonorController {
+
+    @Autowired
+    private DonorService donorService;
+
+    @PostMapping("/donate")
+    public ResponseEntity<String> postDonation(@RequestBody Donor donor) {
+        return ResponseEntity.ok(donorService.postDonation(donor));
+    }
+
+    @PutMapping("/verify/{donorId}")
+    public ResponseEntity<String> requestVerification(@PathVariable Long donorId) {
+        return ResponseEntity.ok(donorService.requestVerification(donorId));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Donor>> getAllDonors() {
+        return ResponseEntity.ok(donorService.getAllDonors());
+    }
+}
