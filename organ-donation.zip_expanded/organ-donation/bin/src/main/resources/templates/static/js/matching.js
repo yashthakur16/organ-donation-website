@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.text())
         .then(message => {
             alert(message);
-            loadMatches();
+            loadMatches(); // Refresh the matches list after finding
         })
         .catch(error => console.error("Error finding matches:", error));
     }
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     matchesList.innerHTML = "<p>No matches found</p>";
                 } else {
                     matchesList.innerHTML = matches
-                        .filter(match => match.recipient.id === userData.id)
+                        .filter(match => match.recipient.id === Number(userData.id))
                         .map(match => `
                             <div class="match">
                                 <p>Donor: ${match.donor.user.name}</p>
@@ -47,5 +47,9 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "login.html";
     }
 
+    // Auto-load matches when the page loads
     loadMatches();
+
+    // Attach the findMatches function to the button in case it's missing
+    document.querySelector("button[onclick='findMatches()']").addEventListener("click", findMatches);
 });

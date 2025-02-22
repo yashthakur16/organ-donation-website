@@ -1,16 +1,8 @@
 package com.organ.donation.repository;
 
 import com.organ.donation.model.Matches;
-import com.organ.donation.model.Donor;
-import com.organ.donation.model.Recipient;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 public interface MatchesRepository extends JpaRepository<Matches, Long> {
 
-    @Query("SELECT d FROM Donor d WHERE d.organType = :organType AND d.bloodType = :bloodType AND d.status = 'Verified'")
-    List<Donor> findMatchingDonors(@Param("organType") String organType, @Param("bloodType") String bloodType);
-}
+   }

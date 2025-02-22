@@ -110,7 +110,7 @@ window.rejectRecipient = function (recipientId) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error("Failed to reject recipient");
+            throw new Error("Failed to reject recipient");q
         }
         return response.text();
     })

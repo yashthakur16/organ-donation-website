@@ -4,50 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Organ Donation</title>
-    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="assets/dashboard.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
         <h2>Welcome, <span id="username">User</span></h2>
         <h3>Role: <span id="userRole"></span></h3>
 
-        <!-- Donor Section -->
         <div id="donorSection" class="dashboard-section">
-            <h3>Donor Options</h3>
+            <h3><i class="fa-solid fa-hand-holding-medical"></i> Donor Options</h3>
             <button onclick="window.location.href='donate.html'">Donate an Organ</button>
             <button onclick="window.location.href='donor_status.html'">Check Donation Status</button>
         </div>
 
-        <!-- Recipient Section -->
         <div id="recipientSection" class="dashboard-section">
-            <h3>Recipient Options</h3>
+            <h3><i class="fa-solid fa-hands-helping"></i> Recipient Options</h3>
             <button onclick="window.location.href='request_organ.html'">Request an Organ</button>
             <button onclick="window.location.href='recipient_status.html'">Check Request Status</button>
         </div>
 
-        <!-- Admin Section -->
         <div id="adminSection" class="dashboard-section">
-            <h3>Admin Options</h3>
+            <h3><i class="fa-solid fa-user-shield"></i> Admin Options</h3>
             <button onclick="window.location.href='verify_users.html'">Verify Users</button>
             <button onclick="window.location.href='matching.html'">View Matches</button>
         </div>
 
-        <button id="logoutBtn">Logout</button>
+        <button id="logoutBtn" class="logout-btn"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+
+        <button onclick="goToChat()" class="chat-btn"><i class="fa-solid fa-comments"></i> Go to Chat</button>
+
+        <div id="notifications" class="notifications">
+            <h3>🔔 Notifications</h3>
+            <ul id="notification-list"></ul>
+        </div>
     </div>
 
-    <button onclick="goToChat()">Go to Chat</button>
-
-    <div id="notifications">
-        <h3>🔔 Notifications</h3>
-        <ul id="notification-list"></ul>
-    </div>
-    
     <script src="js/notifications.js"></script>
-
-    
-    
-
-
     <script src="js/dashboard.js"></script>
 </body>
 </html>

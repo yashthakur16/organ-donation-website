@@ -1,8 +1,17 @@
 document.getElementById("loginForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const loginBtn = document.getElementById("loginBtn");
+
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+    }
+
+    loginBtn.innerHTML = "Logging in...";
+    loginBtn.disabled = true;
 
     try {
         const response = await fetch("http://localhost:8080/auth/login", {
@@ -22,12 +31,11 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         alert("Login successful!");
 
         // Redirect Admin to admin dashboard, others to common dashboard
-        if (data.role === "ADMIN") {
-            window.location.href = "admin_dashboard.html";
-        } else {
-            window.location.href = "dashboard.html";
-        }
+        window.location.href = data.role === "ADMIN" ? "admin_dashboard.html" : "dashboard.html";
     } catch (error) {
         alert(error.message);
     }
+
+    loginBtn.innerHTML = "Login";
+    loginBtn.disabled = false;
 });

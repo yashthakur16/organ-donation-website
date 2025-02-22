@@ -22,10 +22,28 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "login.html";
     });
 
-    
-    
+    fetchNotifications();
 });
 
 function goToChat() {
     window.location.href = "chat.html";
+}
+
+// Fetch notifications dynamically
+async function fetchNotifications() {
+    try {
+        const response = await fetch("http://localhost:8080/notifications");
+        const notifications = await response.json();
+        
+        const notificationList = document.getElementById("notification-list");
+        notificationList.innerHTML = ""; // Clear previous notifications
+
+        notifications.forEach(notification => {
+            const li = document.createElement("li");
+            li.innerText = notification.message;
+            notificationList.appendChild(li);
+        });
+    } catch (error) {
+        console.error("Error fetching notifications:", error);
+    }
 }

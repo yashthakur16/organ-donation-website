@@ -4,19 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="assets/admin_dashboard.css">
 </head>
 <body>
     <div class="container">
         <h2>Admin Dashboard</h2>
 
         <h3>Pending Donor Verifications</h3>
-        <div id="donorRequests">Loading...</div>
+        <div id="donorRequests" class="loading">Loading...</div>
 
         <h3>Pending Recipient Verifications</h3>
-        <div id="recipientRequests">Loading...</div>
+        <div id="recipientRequests" class="loading">Loading...</div>
 
         <button onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <p id="confirmationText"></p>
+            <button id="confirmBtn">Confirm</button>
+            <button id="cancelBtn">Cancel</button>
+        </div>
     </div>
 
     <script src="js/admin_dashboard.js"></script>

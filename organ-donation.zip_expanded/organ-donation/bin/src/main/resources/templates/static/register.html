@@ -4,24 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Organ Donation</title>
-    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="assets/register.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
 </head>
 <body>
     <div class="register-container">
         <h2>Register</h2>
         <form id="registerForm">
-            <input type="text" id="name" placeholder="Full Name" required>
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="text" id="phone" placeholder="Phone Number" required>
-            <input type="password" id="password" placeholder="Password" required>
-            
-            <select id="role" required>
-                <option value="DONOR">Donor</option>
-                <option value="RECIPIENT">Recipient</option>
-                <option value="ADMIN">Admin</option>
-            </select>
-            
-            <button type="submit">Register</button>
+            <div class="input-group">
+                <input type="text" id="name" placeholder="Full Name" required>
+                <i class="fa fa-user"></i>
+            </div>
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email" required>
+                <i class="fa fa-envelope"></i>
+            </div>
+            <div class="input-group">
+                <input type="text" id="phone" placeholder="Phone Number" required>
+                <i class="fa fa-phone"></i>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password" required>
+                <i class="fa fa-lock"></i>
+            </div>
+            <div class="input-group">
+                <select id="role" required>
+                    <option value="DONOR">Donor</option>
+                    <option value="RECIPIENT">Recipient</option>
+                    <option value="ADMIN">Admin</option>
+                </select>
+                <i class="fa fa-user-shield"></i>
+            </div>
+            <button type="submit" id="registerBtn">Register</button>
         </form>
         <p>Already have an account? <a href="login.html">Login</a></p>
     </div>
