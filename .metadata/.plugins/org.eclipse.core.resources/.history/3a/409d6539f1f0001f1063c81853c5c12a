@@ -1,0 +1,178 @@
+package com.organ.donation.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "donors")
+public class Donor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long donorId;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(nullable = false)
+    private String organType;
+
+    @Column(nullable = false)
+    private String bloodType;
+
+    @Column(nullable = false)
+    private String status; // Pending, Verified, Rejected
+
+    @Column(nullable = false)
+    private String dateOfBirth;
+
+    @Column(nullable = false)
+    private String gender;
+
+    @Column(nullable = false)
+    private String contactNumber;
+
+    @Column(nullable = false)
+    private String address;
+
+    @Column(nullable = true)
+    private String medicalConditions;
+
+    @Column(nullable = true)
+    private String medications;
+
+    @Column(nullable = true)
+    private String lifestyleHabits;
+
+    @Column(nullable = false)
+    private String emergencyContactName;
+
+    @Column(nullable = false)
+    private String emergencyContactNumber;
+
+    @Column(nullable = false)
+    private Boolean consentFormSigned;
+
+    public Long getDonorId() {
+        return donorId;
+    }
+
+    public void setDonorId(Long donorId) {
+        this.donorId = donorId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getOrganType() {
+        return organType;
+    }
+
+    public void setOrganType(String organType) {
+        this.organType = organType;
+    }
+
+    public String getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(String bloodType) {
+        this.bloodType = bloodType;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getMedicalConditions() {
+        return medicalConditions;
+    }
+
+    public void setMedicalConditions(String medicalConditions) {
+        this.medicalConditions = medicalConditions;
+    }
+
+    public String getMedications() {
+        return medications;
+    }
+
+    public void setMedications(String medications) {
+        this.medications = medications;
+    }
+
+    public String getLifestyleHabits() {
+        return lifestyleHabits;
+    }
+
+    public void setLifestyleHabits(String lifestyleHabits) {
+        this.lifestyleHabits = lifestyleHabits;
+    }
+
+    public String getEmergencyContactName() {
+        return emergencyContactName;
+    }
+
+    public void setEmergencyContactName(String emergencyContactName) {
+        this.emergencyContactName = emergencyContactName;
+    }
+
+    public String getEmergencyContactNumber() {
+        return emergencyContactNumber;
+    }
+
+    public void setEmergencyContactNumber(String emergencyContactNumber) {
+        this.emergencyContactNumber = emergencyContactNumber;
+    }
+
+    public Boolean getConsentFormSigned() {
+        return consentFormSigned;
+    }
+
+    public void setConsentFormSigned(Boolean consentFormSigned) {
+        this.consentFormSigned = consentFormSigned;
+    }
+
+    public void setVerificationStatus(String string) {
+        // TODO Auto-generated method stub
+    }
+}

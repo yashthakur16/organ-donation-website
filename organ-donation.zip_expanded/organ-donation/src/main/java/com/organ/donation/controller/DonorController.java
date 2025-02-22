@@ -27,11 +27,20 @@ public class DonorController {
         Donor donor = new Donor();
         donor.setOrganType(donorRequest.getOrganType());
         donor.setBloodType(donorRequest.getBloodType());
+        donor.setFullName(donorRequest.getFullName());
+        donor.setDob(donorRequest.getDob());
+        donor.setGender(donorRequest.getGender());
+        donor.setPhone(donorRequest.getPhone());
+        donor.setEmail(donorRequest.getEmail());
+        donor.setAddress(donorRequest.getAddress());
+        donor.setMedicalHistory(donorRequest.getMedicalHistory());
+        donor.setLifestyleHabits(donorRequest.getLifestyleHabits());
+        donor.setEmergencyContact(donorRequest.getEmergencyContact());
+        donor.setLegalConsent(donorRequest.isLegalConsent());
 
         String response = donorService.postDonation(donor, donorRequest.getUserId());
         return ResponseEntity.ok(response);
     }
-
 
     @PutMapping("/verify/{donorId}")
     public ResponseEntity<String> requestVerification(@PathVariable Long donorId) {
@@ -44,11 +53,20 @@ public class DonorController {
     }
 }
 
-// DTO for safer request handling
 class DonorRequest {
     private Long userId;
     private String organType;
     private String bloodType;
+    private String fullName;
+    private String dob;
+    private String gender;
+    private String phone;
+    private String email;
+    private String address;
+    private String medicalHistory;
+    private String lifestyleHabits;
+    private String emergencyContact;
+    private boolean legalConsent;
 
     // Getters & Setters
     public Long getUserId() {
@@ -68,5 +86,65 @@ class DonorRequest {
     }
     public void setBloodType(String bloodType) {
         this.bloodType = bloodType;
+    }
+    public String getFullName() {
+        return fullName;
+    }
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+    public String getDob() {
+        return dob;
+    }
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+    public String getGender() {
+        return gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+    public String getPhone() {
+        return phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public String getMedicalHistory() {
+        return medicalHistory;
+    }
+    public void setMedicalHistory(String medicalHistory) {
+        this.medicalHistory = medicalHistory;
+    }
+    public String getLifestyleHabits() {
+        return lifestyleHabits;
+    }
+    public void setLifestyleHabits(String lifestyleHabits) {
+        this.lifestyleHabits = lifestyleHabits;
+    }
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+    public void setEmergencyContact(String emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
+    public boolean isLegalConsent() {
+        return legalConsent;
+    }
+    public void setLegalConsent(boolean legalConsent) {
+        this.legalConsent = legalConsent;
     }
 }

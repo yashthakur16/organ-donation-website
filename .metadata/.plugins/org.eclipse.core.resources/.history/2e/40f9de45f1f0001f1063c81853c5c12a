@@ -1,0 +1,33 @@
+package com.organ.donation.model;
+
+import jakarta.persistence.*;
+
+@Entity
+public class Donor {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
+
+    private String fullName;
+    private LocalDate dob;
+    private String gender;
+    private String phone;
+    private String email;
+
+    @Column(nullable = false)
+    private String address; 
+
+    private String organType;
+    private String bloodType;
+    private String medicalHistory;
+    private String lifestyleHabits;
+    private String emergencyContact;
+    private boolean legalConsent;
+
+    // Getters and Setters
+}

@@ -1,127 +1,158 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const userData = JSON.parse(localStorage.getItem("user"));
-
-    if (!userData || userData.role !== "ADMIN") {
-        alert("Access Denied! Only admins can access this page.");
-        window.location.href = "login.html";
-        return;
+    // Check if user is logged in and is ADMIN
+    const userData = localStorage.getItem("user");
+    if (!userData) {
+      alert("You must log in first.");
+      window.location.href = "login.html";
+      return;
     }
-
+    const user = JSON.parse(userData);
+    if (user.role !== "ADMIN") {
+      alert("Access Denied! Only admins can access this page.");
+      window.location.href = "login.html";
+      return;
+    }
+    // Set admin name in the overview section
+    document.getElementById("adminName").innerText = user.name;
+  
+    // Fetch Donor Requests and update pending count
     function fetchDonorRequests() {
-        fetch("http://localhost:8080/donor/all")
-            .then(response => response.json())
-            .then(data => {
-                const pendingDonors = data.filter(donor => donor.status.toLowerCase() === "pending");
-                const donorContainer = document.getElementById("donorRequests");
-
-                donorContainer.innerHTML = ""; // Clear previous content
-
-                donorContainer.innerHTML = pendingDonors.length
-                    ? pendingDonors.map(donor => `
-                        <div class="donor-card" id="donor-${donor.donorId}">
-                            <p><strong>Name:</strong> ${donor.user.name}</p>
-                            <p><strong>Organ:</strong> ${donor.organType}</p>
-                            <p><strong>Blood Type:</strong> ${donor.bloodType}</p>
-                            <button onclick="verifyDonor(${donor.donorId})">Verify</button>
-                            <button onclick="rejectDonor(${donor.donorId})">Reject</button>
-                        </div>
-                    `).join("")
-                    : "<p>No pending donor verifications.</p>";
-            })
-            .catch(error => console.error("Error fetching donor requests:", error));
-    }
-
-    function fetchRecipientRequests() {
-        fetch("http://localhost:8080/recipient/all")
-            .then(response => response.json())
-            .then(data => {
-                const pendingRecipients = data.filter(recipient => recipient.status.toLowerCase() === "pending");
-                const recipientContainer = document.getElementById("recipientRequests");
-
-                recipientContainer.innerHTML = ""; // Clear previous content
-
-                recipientContainer.innerHTML = pendingRecipients.length
-                    ? pendingRecipients.map(recipient => `
-                        <div class="recipient-card" id="recipient-${recipient.recipientId}">
-                            <p><strong>Name:</strong> ${recipient.user.name}</p>
-                            <p><strong>Organ Needed:</strong> ${recipient.organType}</p>
-                            <p><strong>Blood Type:</strong> ${recipient.bloodType}</p>
-                            <button onclick="verifyRecipient(${recipient.recipientId})">Verify</button>
-                            <button onclick="rejectRecipient(${recipient.recipientId})">Reject</button>
-                        </div>
-                    `).join("")
-                    : "<p>No pending recipient verifications.</p>";
-            })
-            .catch(error => console.error("Error fetching recipient requests:", error));
-    }
-
-    // Function to Verify Donor
-    window.verifyDonor = function (donorId) {
-        fetch(`http://localhost:8080/admin/verify/donor/${donorId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" }
+      fetch("http://localhost:8080/donor/all")
+        .then(response => response.json())
+        .then(data => {
+          // Filter pending donor requests (assuming 'status' property exists)
+          const pendingDonors = data.filter(donor => donor.status.toLowerCase() === "pending");
+          document.getElementById("pendingDonorCount").innerText = pendingDonors.length;
+          
+          const donorContainer = document.getElementById("donorRequests");
+          donorContainer.innerHTML = pendingDonors.length > 0
+            ? pendingDonors.map(donor => `
+                <div class="donor-card" id="donor-${donor.donorId}">
+                  <p><strong>Name:</strong> ${donor.user.name}</p>
+                  <p><strong>Organ:</strong> ${donor.organType}</p>
+                  <p><strong>Blood Type:</strong> ${donor.bloodType}</p>
+                  <button onclick="verifyDonor(${donor.donorId})">Verify</button>
+                  <button onclick="rejectDonor(${donor.donorId})">Reject</button>
+                </div>
+              `).join("")
+            : "<p>No pending donor verifications.</p>";
         })
+        .catch(error => console.error("Error fetching donor requests:", error));
+    }
+  
+    // Fetch Recipient Requests and update pending count
+    function fetchRecipientRequests() {
+      fetch("http://localhost:8080/recipient/all")
+        .then(response => response.json())
+        .then(data => {
+          // Filter pending recipient requests (assuming 'status' property exists)
+          const pendingRecipients = data.filter(recipient => recipient.status.toLowerCase() === "pending");
+          document.getElementById("pendingRecipientCount").innerText = pendingRecipients.length;
+          
+          const recipientContainer = document.getElementById("recipientRequests");
+          recipientContainer.innerHTML = pendingRecipients.length > 0
+            ? pendingRecipients.map(recipient => `
+                <div class="recipient-card" id="recipient-${recipient.recipientId}">
+                  <p><strong>Name:</strong> ${recipient.user.name}</p>
+                  <p><strong>Organ Needed:</strong> ${recipient.organType}</p>
+                  <p><strong>Blood Type:</strong> ${recipient.bloodType}</p>
+                  <button onclick="verifyRecipient(${recipient.recipientId})">Verify</button>
+                  <button onclick="rejectRecipient(${recipient.recipientId})">Reject</button>
+                </div>
+              `).join("")
+            : "<p>No pending recipient verifications.</p>";
+        })
+        .catch(error => console.error("Error fetching recipient requests:", error));
+    }
+  
+    // Function to Verify Donor using the provided API endpoint
+    window.verifyDonor = function (donorId) {
+      fetch(`http://localhost:8080/admin/verify/donor/${donorId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" }
+      })
         .then(response => response.text())
         .then(message => {
-            alert(message);
-            document.getElementById(`donor-${donorId}`).remove(); // Remove verified donor from UI
+          alert(message);
+          // Re-fetch donor requests to update UI and pending count
+          fetchDonorRequests();
         })
         .catch(error => console.error("Error verifying donor:", error));
     };
-
-    // Function to Reject Donor
+  
+    // Function to Reject Donor using the provided API endpoint
     window.rejectDonor = function (donorId) {
-        fetch(`http://localhost:8080/admin/reject/donor/${donorId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" }
-        })
+      fetch(`http://localhost:8080/admin/reject/donor/${donorId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" }
+      })
         .then(response => response.text())
         .then(message => {
-            alert(message);
-            document.getElementById(`donor-${donorId}`).remove(); // Remove rejected donor from UI
+          alert(message);
+          fetchDonorRequests();
         })
         .catch(error => console.error("Error rejecting donor:", error));
     };
-
-    // Function to Verify Recipient
-window.verifyRecipient = function (recipientId) {
-    fetch(`http://localhost:8080/admin/verify/recipient/${recipientId}`, {
+  
+    // Function to Verify Recipient using the provided API endpoint
+    window.verifyRecipient = function (recipientId) {
+      fetch(`http://localhost:8080/admin/verify/recipient/${recipientId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" }
-    })
-    .then(response => {
-        if (!response.ok) {
+      })
+        .then(response => {
+          if (!response.ok) {
             throw new Error("Failed to verify recipient");
-        }
-        return response.text();
-    })
-    .then(message => {
-        alert(message);
-        document.getElementById(`recipient-${recipientId}`).remove(); // Remove verified recipient from UI
-    })
-    .catch(error => console.error("Error verifying recipient:", error));
-};
-
-// Function to Reject Recipient
-window.rejectRecipient = function (recipientId) {
-    fetch(`http://localhost:8080/admin/reject/recipient/${recipientId}`, {
+          }
+          return response.text();
+        })
+        .then(message => {
+          alert(message);
+          fetchRecipientRequests();
+        })
+        .catch(error => console.error("Error verifying recipient:", error));
+    };
+  
+    // Function to Reject Recipient using the provided API endpoint
+    window.rejectRecipient = function (recipientId) {
+      fetch(`http://localhost:8080/admin/reject/recipient/${recipientId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Failed to reject recipient");q
-        }
-        return response.text();
-    })
-    .then(message => {
-        alert(message);
-        document.getElementById(`recipient-${recipientId}`).remove(); // Remove rejected recipient from UI
-    })
-    .catch(error => console.error("Error rejecting recipient:", error));
-};
-
-
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Failed to reject recipient");
+          }
+          return response.text();
+        })
+        .then(message => {
+          alert(message);
+          fetchRecipientRequests();
+        })
+        .catch(error => console.error("Error rejecting recipient:", error));
+    };
+  
+    // Fetch initial data for pending requests
     fetchDonorRequests();
     fetchRecipientRequests();
-});
+  
+    // Profile dropdown handling for admin topbar
+    document.getElementById("profileAvatar").addEventListener("click", function(e) {
+      e.stopPropagation();
+      var profileDropdown = document.getElementById("profileDropdown");
+      profileDropdown.style.display = (profileDropdown.style.display === "block") ? "none" : "block";
+    });
+    
+    document.addEventListener("click", function() {
+      document.getElementById("profileDropdown").style.display = "none";
+    });
+    
+    // Logout functionality
+    document.getElementById("logoutLink").addEventListener("click", function(e) {
+      e.preventDefault();
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("user");
+      window.location.href = "login.html";
+    });
+  });
+  

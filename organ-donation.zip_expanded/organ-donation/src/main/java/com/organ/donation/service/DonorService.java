@@ -23,10 +23,11 @@ public class DonorService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found!"));
 
-        // Set the user before saving
+        // Set user and status
         donor.setUser(user);
         donor.setStatus("Pending");
 
+        // Save donor
         donorRepository.save(donor);
         return "Donation request submitted successfully!";
     }
@@ -35,7 +36,7 @@ public class DonorService {
         Optional<Donor> donorOpt = donorRepository.findById(donorId);
         if (donorOpt.isPresent()) {
             Donor donor = donorOpt.get();
-            donor.setVerificationStatus("Under Review");
+            donor.setStatus("Under Review"); // Corrected status update
             donorRepository.save(donor);
             return "Verification requested successfully!";
         }

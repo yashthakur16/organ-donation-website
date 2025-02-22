@@ -1,13 +1,6 @@
 package com.organ.donation.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "donors")
@@ -29,7 +22,32 @@ public class Donor {
     @Column(nullable = false)
     private String status; // Pending, Verified, Rejected
 
-    
+    // New fields
+    @Column(nullable = false)
+    private String fullName;
+
+    @Column(nullable = false)
+    private String dob; // Date of Birth
+
+    @Column(nullable = false)
+    private String gender;
+
+    @Column(nullable = false)
+    private String phone; // Contact Number
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String address;
+
+    private String medicalHistory;
+    private String lifestyleHabits;
+    private String emergencyContact;
+
+    @Column(nullable = false)
+    private boolean legalConsent;
+
 	public Long getDonorId() {
 		return donorId;
 	}
@@ -69,11 +87,86 @@ public class Donor {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	public void setVerificationStatus(String string) {
-		// TODO Auto-generated method stub
-		
+
+	public String getFullName() {
+		return fullName;
 	}
-    
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getDob() {
+		return dob;
+	}
+
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getMedicalHistory() {
+		return medicalHistory;
+	}
+
+	public void setMedicalHistory(String medicalHistory) {
+		this.medicalHistory = medicalHistory;
+	}
+
+	public String getLifestyleHabits() {
+		return lifestyleHabits;
+	}
+
+	public void setLifestyleHabits(String lifestyleHabits) {
+		this.lifestyleHabits = lifestyleHabits;
+	}
+
+	public String getEmergencyContact() {
+		return emergencyContact;
+	}
+
+	public void setEmergencyContact(String emergencyContact) {
+		this.emergencyContact = emergencyContact;
+	}
+
+	public boolean isLegalConsent() {
+		return legalConsent;
+	}
+
+	public void setLegalConsent(boolean legalConsent) {
+		this.legalConsent = legalConsent;
+	}
+
     
 }
