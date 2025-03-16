@@ -4,22 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
-    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="assets/chat.css">
 </head>
 <body>
-    <h2>Chat</h2>
-    
-    <div>
-        <label for="receiver">Select Recipient:</label>
-        <select id="receiver"></select>
-    </div>
+    <div class="chat-container">
+        <!-- Sidebar: User List -->
+        <div class="user-list">
+            <h3>Chats</h3>
+            <div id="userList"></div>
+        </div>
 
-    <div id="chatWindow">
-        <!-- Messages will be dynamically added here -->
+        <!-- Chat Window -->
+        <div class="chat-box">
+            <div class="chat-header">
+                <h3 id="chatHeader">Select a user</h3>
+            </div>
+            <div id="chatWindow" class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Type your message..." />
+                <button id="sendMessage">Send</button>
+            </div>
+        </div>
     </div>
-
-    <input type="text" id="messageInput" placeholder="Type your message..." />
-    <button id="sendMessage">Send</button>
 
     <script src="js/chat.js"></script>
 </body>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slow & Fast Pointer Animation</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .node {
+            width: 50px;
+            height: 50px;
+            background-color: green;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px;
+            font-weight: bold;
+            position: relative;
+        }
+        .slow {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: yellow;
+        }
+        .fast {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: lime;
+        }
+        .arrow {
+            width: 20px;
+            height: 10px;
+            border-top: 2px solid white;
+            border-right: 2px solid white;
+            transform: rotate(45deg);
+            position: absolute;
+            top: 50%;
+            left: 100%;
+        }
+        @keyframes move {
+            0% { left: 0%; }
+            100% { left: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <h2>Slow & Fast Pointer Animation</h2>
+    <div class="container" id="linked-list">
+        <div class="node">3 <span class="arrow"></span></div>
+        <div class="node">5 <span class="arrow"></span></div>
+        <div class="node" id="slow-node">7 <span class="slow">slow</span><span class="arrow"></span></div>
+        <div class="node">9 <span class="arrow"></span></div>
+        <div class="node">11 <span class="fast">fast</span><span class="arrow"></span></div>
+        <div class="node">13 <span class="arrow"></span></div>
+        <div class="node">15 <span class="arrow"></span></div>
+        <div class="node">17 <span class="arrow"></span></div>
+    </div>
+
+    <script>
+        let slow = document.querySelector('.slow');
+        let fast = document.querySelector('.fast');
+        let nodes = document.querySelectorAll('.node');
+        let slowIndex = 2, fastIndex = 4;
+
+        function movePointers() {
+            if (fastIndex < nodes.length - 1) fastIndex += 2;
+            else fastIndex = 2;
+
+            if (slowIndex < nodes.length - 1) slowIndex += 1;
+            else slowIndex = 2;
+
+            let slowNode = nodes[slowIndex];
+            let fastNode = nodes[fastIndex];
+
+            slow.style.transform = `translateX(${slowNode.offsetLeft - nodes[2].offsetLeft}px)`;
+            fast.style.transform = `translateX(${fastNode.offsetLeft - nodes[2].offsetLeft}px)`;
+
+            if (slowIndex === fastIndex) {
+                alert("Cycle Detected!");
+                clearInterval(interval);
+            }
+        }
+        
+        let interval = setInterval(movePointers, 1000);
+    </script>
+</body>
+</html>

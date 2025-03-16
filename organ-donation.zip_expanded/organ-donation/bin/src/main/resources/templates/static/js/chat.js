@@ -10,81 +10,95 @@ document.addEventListener("DOMContentLoaded", function () {
     const chatWindow = document.getElementById("chatWindow");
     const messageInput = document.getElementById("messageInput");
     const sendMessageButton = document.getElementById("sendMessage");
-    const receiverDropdown = document.getElementById("receiver");
+    const userList = document.getElementById("userList");
+    const chatHeader = document.getElementById("chatHeader");
 
-    // Load available chat users (Donors for Recipients and vice versa)
+    let selectedReceiverId = null;
+
+    // Load available users
     function loadUsers() {
-        fetch("http://localhost:8080/api/users/all")  // ✅ Corrected API Endpoint
+        fetch("http://localhost:8080/api/users/all")
             .then(response => response.json())
             .then(users => {
-                console.log("Users fetched:", users);  // ✅ Debugging Step
-                
+                console.log("Users fetched:", users);
+
                 if (!Array.isArray(users)) {
                     throw new Error("Unexpected response format");
                 }
 
-                receiverDropdown.innerHTML = ""; // Clear previous options
+                userList.innerHTML = "";
 
                 users.forEach(user => {
-                    if (user.id !== userData.id) { // Avoid self-selection
-                        const option = document.createElement("option");
-                        option.value = user.id;
-                        option.textContent = user.name;
-                        receiverDropdown.appendChild(option);
+                    if (user.id !== userData.id) {
+                        const userElement = document.createElement("div");
+                        userElement.classList.add("user");
+                        userElement.textContent = user.name;
+                        userElement.dataset.userId = user.id;
+                        userElement.addEventListener("click", (event) => selectUser(user, event));
+                        userList.appendChild(userElement);
                     }
                 });
-
-                if (receiverDropdown.options.length > 0) {
-                    loadChat(); // Load chat messages for the first user
-                }
             })
             .catch(error => console.error("Error fetching users:", error));
     }
 
-    // Fetch and display chat messages
-    function loadChat() {
-        const receiverId = receiverDropdown.value;
-        if (!receiverId) return;
+    function selectUser(user, event) {
+        selectedReceiverId = user.id;
+        chatHeader.textContent = `Chat with ${user.name}`;
 
-        fetch(`http://localhost:8080/api/chats/history?user1Id=${userData.id}&user2Id=${receiverId}`)
+        // Remove active class from all users and highlight the selected one
+        document.querySelectorAll(".user").forEach(el => el.classList.remove("active"));
+        event.target.classList.add("active");
+
+        loadChat();
+    }
+
+    function loadChat() {
+        if (!selectedReceiverId) return;
+
+        fetch(`http://localhost:8080/api/chats/history?user1Id=${userData.id}&user2Id=${selectedReceiverId}`)
             .then(response => response.json())
             .then(messages => {
-                console.log("Messages fetched:", messages);  // ✅ Debugging Step
+                console.log("Messages fetched:", messages);
                 
                 chatWindow.innerHTML = messages.map(msg => `
-                    <div class="${msg.sender.id === userData.id ? 'sent' : 'received'}">
-                        <strong>${msg.sender.name}:</strong> ${msg.message}
+                    <div class="chat-message ${msg.sender.id === userData.id ? 'sent' : 'received'}">
+                        ${msg.message}
                     </div>
                 `).join("");
             })
             .catch(error => console.error("Error fetching chat messages:", error));
     }
 
-    // Send message
     sendMessageButton.addEventListener("click", function () {
-        const receiverId = receiverDropdown.value;
+        if (!selectedReceiverId) {
+            alert("Please select a user to chat with.");
+            return;
+        }
+        
         const message = messageInput.value.trim();
+        if (!message) {
+            alert("Message cannot be empty.");
+            return;
+        }
 
-        if (!receiverId || !message) return;
-
-        fetch("http://localhost:8080/api/chats/send", { // ✅ Corrected API Endpoint
+        fetch("http://localhost:8080/api/chats/send", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 senderId: userData.id,
-                receiverId: receiverId,
+                receiverId: selectedReceiverId,
                 message: message
             })
         })
-        .then(response => response.text()) // ✅ Expecting text response
+        .then(response => response.text())
         .then(() => {
+            console.log("Message sent successfully");
             messageInput.value = "";
-            loadChat(); // Refresh messages
+            loadChat();
         })
         .catch(error => console.error("Error sending message:", error));
     });
-
-    receiverDropdown.addEventListener("change", loadChat);
 
     loadUsers();
 });
